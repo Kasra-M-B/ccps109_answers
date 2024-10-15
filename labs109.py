@@ -158,3 +158,28 @@ def taxi_zum_zum(moves):
             location[1] +=  direction[1]
     return tuple(location)
 
+def give_change(amount, coins):
+    ans = []
+    for coin in coins:
+        if coin <= amount:
+            n = amount//coin
+            ans+=[coin]*n
+            amount-= coin*n
+    return ans
+
+def safe_squares_rooks(n,rooks):
+    board = [[0]*n]*n
+    if not rooks:
+        return n*n
+    for rook in rooks:
+        board[rook[0]]=[1]*n
+        for i in range(n):
+            board[i][rook[1]] = 1
+    return sum([board[i].count(0) for i in range(n)])
+
+# def words_with_given_shape(words, shape):
+#     ans = []
+#     for word in words:
+#         for i in range(len(word)-1):
+
+#     return ans
