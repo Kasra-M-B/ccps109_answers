@@ -78,4 +78,36 @@ def domino_cycle(tiles):
     return tiles[-1][1] == tiles[0][0]
 
 def colour_trio(colours):
-    pass
+    prev_row = colours
+
+    while len(prev_row) > 1:
+        curr_row = []
+        for i in range(len(prev_row) - 1):
+            if prev_row[i] == prev_row[i + 1]:
+                curr_row.append(prev_row[i])
+            else:
+                # Determine the missing color
+                if 'r' not in (prev_row[i], prev_row[i + 1]):
+                    curr_row.append('r')
+                elif 'b' not in (prev_row[i], prev_row[i + 1]):
+                    curr_row.append('b')
+                else:
+                    curr_row.append('y')
+        prev_row = curr_row  # Move to the next row
+
+    return prev_row[0]
+
+def count_dominators(items):
+    count = 0
+    #assume some arbitary large negative number
+    max_so_far = float('-inf') #can also use some really big negative number like -1e9
+
+    #reverse the list
+    items = items[::-1]
+    # Traverse the list from right to left
+    for item in items:
+        if item > max_so_far:
+            count += 1
+            max_so_far = item  # Update the max so far
+
+    return count
