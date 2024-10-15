@@ -111,3 +111,50 @@ def count_dominators(items):
             max_so_far = item  # Update the max so far
 
     return count
+
+def extract_increasing(digits):
+    ans = []
+    prev = -1
+    current = 0
+    for d in digits:
+        current= 10 * current + int(d)
+        if current > prev:
+            ans.append(current)
+            prev = current
+            current = 0
+    return ans
+
+def words_with_letters(words, letters):
+    # return the list words that contan letters as a subsequence
+    ans = []
+    for word in words:
+        i = 0
+        for letter in letters:
+            # you can do it without .find(), but its gonna be slower since
+            # .find() is implemented in C
+            i = word.find(letter, i)
+            if i == -1:
+                break
+            i += 1
+        else:
+            ans.append(word)
+    return ans
+
+def taxi_zum_zum(moves):
+    #facing north initialy
+    location = [0,0]
+    possibilies = [(0,1), (1,0), (0,-1), (-1,0)]
+    index = 0
+    for move in moves:
+        if move == 'L':
+            index -=1
+            continue
+        elif move == 'R':
+            index +=1
+            continue
+        else:
+            direction = possibilies[index%4]
+            location[0] += direction[0]
+            location[1] +=  direction[1]
+    return tuple(location)
+
