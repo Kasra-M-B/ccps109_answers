@@ -211,6 +211,9 @@ def is_left_handed(pips):
         return check not in pos
     return check in pos
 
+
+
+
 def winning_card(cards, trump=None):
 
     # all this is that it converts the number in words to number in integers
@@ -229,4 +232,70 @@ def winning_card(cards, trump=None):
     return max(leading_suit_cards, key=lambda x: rank_order[x[0]])
 
 def knight_jump(knight, start, end):
-    pass
+    d = {}
+    k = len(knight)
+    for i in range(k):
+        if knight[i] not in d:
+            d[knight[i]] = 1
+        else:
+            d[knight[i]]+=1
+    for i in range(k):
+        diff = abs(start[i]-end[i])
+        if diff in d and d[diff] != 0:
+            d[diff] -= 1
+        else:
+            return False
+    return True
+
+
+
+def seven_zero(n):
+    # def seven_zero_generator():
+    #     d = 1
+    #     while True:
+    #         for k in range(1, d + 1):
+    #             number = int('7' * k + '0' * (d - k))
+    #             yield number
+    #         d += 1
+    # for num in seven_zero_generator():
+    #     if num % n == 0:
+    #         return num
+    d = 1
+    output = 7
+    while output % n != 0:
+        output = int('7'*d)
+        if n % 2 == 0 or n % 5 == 0:
+            for k in range(1, d+1):
+                output = int('7'*k + '0'*(d-k))
+                if output % n == 0:
+                    return output
+        d+=1
+    return output
+
+def can_balance(items):
+    for i in range(len(items)):
+        left = items[:i]
+        right = items[i+1:]
+        left_torques = [(i-j)*x for j,x in enumerate(left)]
+        right_torques = [(j+1)*x for j,x in enumerate(right)]
+        if sum(left_torques) == sum(right_torques):
+            return i
+    return -1
+
+def josephus(n, k):
+    people = list(range(1,n+1))
+    ans = []
+    index = 0
+    while people:
+        index = (index+k-1)%len(people)
+        ans.append(people.pop(index))
+    return ans
+
+def group_and_skip(n, out, ins):
+    ans = []
+    while n != 0:
+        left_over = n%out
+        ans.append(left_over)
+        n-= left_over
+        n = n // out * ins
+    return ans
