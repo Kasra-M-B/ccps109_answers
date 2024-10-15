@@ -177,9 +177,56 @@ def safe_squares_rooks(n,rooks):
             board[i][rook[1]] = 1
     return sum([board[i].count(0) for i in range(n)])
 
-# def words_with_given_shape(words, shape):
-#     ans = []
-#     for word in words:
-#         for i in range(len(word)-1):
+def words_with_given_shape(words, shape):
+    # shape: if word[i] comes later than words[i+1] then shape[i] = -1
+    # shape: if word[i] same as words[i+1] then shape[i] = 0
+    # shape: if word[i] comes earlier than words[i+1] then shape[i] = 1
+    ans = []
+    for word in words:
+        if len(word) != len(shape)+1:
+            continue
+        for i in range(len(shape)):
+            if (shape[i] == 1 and word[i] >= word[i+1]) or (shape[i] == -1 and word[i] <= word[i+1]) or (shape[i] == 0 and word[i] != word[i+1]):
+                break
+        else:
+            ans.append(word)
+    return ans
 
-#     return ans
+def is_left_handed(pips):
+    # all possible correct answers when only looking at the 1,2,3 side
+    pos = [(1,2,3), (2,3,1), (3,1,2)]
+    switches = 0
+    check = pips
+    if pips[0] not in [1,2,3]:
+        check[0] = (7-pips[0])
+        switches+=1
+    if pips[1] not in [1,2,3]:
+        check[1] =(7-pips[1])
+        switches+=1
+    if pips[2] not in [1,2,3]:
+        check[2] = (7-pips[2])
+        switches+=1
+    check = tuple(check)
+    if switches % 2 == 1:
+        return check not in pos
+    return check in pos
+
+def winning_card(cards, trump=None):
+
+    # all this is that it converts the number in words to number in integers
+    rank_order = {
+        'ace': 14, 'king': 13, 'queen': 12, 'jack': 11,
+        'ten': 10, 'nine': 9, 'eight': 8, 'seven': 7,
+        'six': 6, 'five': 5, 'four': 4, 'three': 3, 'two': 2
+    }
+
+
+    leading_suit = cards[0][1]
+    trump_cards = [card for card in cards if card[1] == trump]
+    if trump_cards:
+        return max(trump_cards, key=lambda x: rank_order[x[0]])
+    leading_suit_cards = [card for card in cards if card[1] == leading_suit]
+    return max(leading_suit_cards, key=lambda x: rank_order[x[0]])
+
+def knight_jump(knight, start, end):
+    pass
