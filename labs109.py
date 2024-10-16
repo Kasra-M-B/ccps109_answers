@@ -299,3 +299,58 @@ def group_and_skip(n, out, ins):
         n-= left_over
         n = n // out * ins
     return ans
+
+def pyramid_blocks(n, m, h):
+    return n*m*h + (n+m)*((h*(h-1))//2) + (h*(h-1)*(2*h-1))//6
+
+def count_growlers(animals):
+    val = {'dog':1, 'god':1, 'cat':-1, 'tac':-1}
+    growls = 0
+    for i in range(len(animals)):
+        watching = []
+        if animals[i] == 'cat' or animals[i] == 'dog':
+            watching = animals[:i]
+        else:
+            watching = animals[i+1:]
+        if sum([val[animal] for animal in watching]) > 0:
+            growls+=1
+        
+    return growls
+
+def bulgarian_solitaire(piles, k):
+    target = sorted(list(range(1,k+1)))
+    moves = 0
+    while target != sorted(piles):
+        new_pile = len(piles)
+        piles = [pile-1 for pile in piles if pile > 1]
+        piles.append(new_pile)
+        moves+=1
+    return moves
+    
+def scylla_or_charybdis(moves, n):
+    # Ill put a simpler solution when I find one
+    def execute_moves(k):
+        position = 0
+        steps = 0
+        for i in range(k - 1, len(moves), k):
+            steps += 1
+            if moves[i] == '+':
+                position += 1
+            else:
+                position -= 1
+            if abs(position) == n:
+                return steps
+        return float('inf')
+
+    min_steps = float('inf')
+    best_k = -1
+
+    for k in range(1, len(moves) + 1):
+        steps = execute_moves(k)
+        if steps < min_steps:
+            min_steps = steps
+            best_k = k
+        elif steps == min_steps and k < best_k:
+            best_k = k
+
+    return best_k if best_k != -1 else -1
